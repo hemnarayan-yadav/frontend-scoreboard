@@ -1,0 +1,5 @@
+@import '../styles.css';
+
+:root { color-scheme: dark; }
+button, input { font-family: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }

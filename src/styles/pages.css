@@ -1,0 +1,2 @@
+/* Public page composition stays separate from application controls. */
+.page-head, .live-header, .events, .feature-grid, .feature-strip { isolation: isolate; }

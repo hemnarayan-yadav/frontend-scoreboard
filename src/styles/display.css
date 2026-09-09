@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+
+.led-display {
+  height: 100vh;
+  background: #000;
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 28vw) 1fr;
+  align-items: stretch;
+  color: #fff;
+}
+.led-team {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+}
+.led-team small {
+  font:
+    700 clamp(1rem, 2.8vw, 2.3rem) "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.led-team strong {
+  font:
+    900 clamp(8rem, 20vw, 18rem)/0.8 "Space Mono",
+    monospace;
+}
+.led-center {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  border-left: 1px solid #242a31;
+  border-right: 1px solid #242a31;
+  text-align: center;
+}
+.led-center span,
+.led-center i {
+  font:
+    700 clamp(0.7rem, 1.3vw, 1rem) "Space Mono",
+    monospace;
+  color: #8995a2;
+  font-style: normal;
+}
+.led-center b {
+  font:
+    700 clamp(2.6rem, 5vw, 5rem) "Space Mono",
+    monospace;
+}
+.led-center em {
+  color: #ffe000;
+  font:
+    900 clamp(1.4rem, 3vw, 3rem) "Space Mono",
+    monospace;
+  font-style: normal;
+}
+.led-loading {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #000;
+  color: #8b95a0;
+  font:
+    1rem "Space Mono",
+    monospace;
+}
+@media (max-width: 720px) {
+  .led-display {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 150px 1fr;
+  }
+  .led-center {
+    order: -1;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #242a31;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+  .led-center b {
+    font-size: 2rem;
+  }
+  .led-center span,
+  .led-center i {
+    font-size: 0.55rem;
+  }
+  .led-center em {
+    grid-column: 1/-1;
+    font-size: 1rem;
+  }
+  .led-team {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 16px;
+  }
+  .led-team strong {
+    font-size: 5rem;
+  }
+  .led-team small {
+    font-size: 0.7rem;
+  }
+}

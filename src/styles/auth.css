@@ -1,0 +1,45 @@
+.auth-page,
+.admin-page {
+  max-width: 680px;
+  padding: 92px 0 110px;
+}
+.auth-page h1,
+.admin-page h1 {
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  line-height: 0.9;
+}
+.page-intro {
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  margin-top: 22px;
+  max-width: 430px;
+}
+.auth-form {
+  display: grid;
+  gap: 18px;
+  max-width: 360px;
+  margin-top: 38px;
+}
+.auth-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.auth-form input {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  padding: 13px 14px;
+  font: inherit;
+  text-transform: none;
+}
+.form-error {
+  color: #ff7676;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+}

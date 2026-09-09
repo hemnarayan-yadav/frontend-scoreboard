@@ -1,0 +1,718 @@
+.control-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 18px;
+}
+.control-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #050608;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 22px;
+  margin-top: 20px;
+}
+.preview-team {
+  flex: 1;
+  text-align: center;
+}
+.preview-team b {
+  display: block;
+  font:
+    700 0.78rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.preview-team strong {
+  display: block;
+  font:
+    900 2.8rem "Space Mono",
+    monospace;
+  margin-top: 3px;
+}
+.preview-middle {
+  text-align: center;
+  padding: 0 24px;
+}
+.preview-middle small {
+  display: block;
+  color: var(--muted);
+  font:
+    700 0.62rem "Space Mono",
+    monospace;
+  letter-spacing: 0.1em;
+}
+.preview-middle b {
+  display: block;
+  font:
+    800 1.65rem "Space Mono",
+    monospace;
+}
+.preview-middle em {
+  display: block;
+  color: #ffe000;
+  font:
+    700 0.78rem "Space Mono",
+    monospace;
+  font-style: normal;
+  margin-top: 4px;
+}
+.control-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.control-card {
+  background: #121820;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 15px;
+}
+.control-card h3 {
+  color: var(--muted);
+  font:
+    700 0.78rem "Space Mono",
+    monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+.team-card.orange {
+  border-top: 2px solid var(--orange);
+}
+.team-card.cyan {
+  border-top: 2px solid var(--cyan);
+}
+.team-card.orange h3,
+.team-card.orange .score-controls {
+  color: var(--orange);
+}
+.team-card.cyan h3,
+.team-card.cyan .score-controls {
+  color: var(--cyan);
+}
+.team-card input {
+  width: 100%;
+  background: #080a0e;
+  border: 1px solid currentColor;
+  color: inherit;
+  padding: 9px 10px;
+  font:
+    700 0.95rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.score-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+.score-controls strong {
+  min-width: 58px;
+  text-align: center;
+  font:
+    900 2.35rem "Space Mono",
+    monospace;
+}
+.score-controls button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.score-controls button:hover,
+.action-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+.setting-row,
+.button-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.setting-row label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+  color: var(--text);
+  font:
+    600 0.78rem "Space Mono",
+    monospace;
+}
+.setting-row input {
+  width: 66px;
+  background: #080a0e;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 8px;
+  font:
+    700 0.82rem "Space Mono",
+    monospace;
+}
+.action-button {
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #1a2230;
+  color: var(--text);
+  font:
+    600 0.78rem "Space Mono",
+    monospace;
+  cursor: pointer;
+}
+.action-button.primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #06130b;
+}
+.action-button.warn {
+  background: #ffe000;
+  border-color: #ffe000;
+  color: #1a1400;
+}
+.action-button.danger {
+  background: transparent;
+  border-color: #ff4b4b;
+  color: #ff7777;
+}
+.action-button.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #06130b;
+}
+.action-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.control-note {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  margin: 10px 0 0;
+}
+.control-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--muted);
+  font:
+    600 0.68rem "Space Mono",
+    monospace;
+  margin-top: 12px;
+}
+.control-status b {
+  color: var(--text);
+}
+@media (max-width: 720px) {
+  .control-panel {
+    padding: 10px;
+  }
+  .control-preview {
+    padding: 9px 10px;
+    margin-top: 12px;
+  }
+  .preview-team b {
+    font-size: 0.58rem;
+  }
+  .preview-team strong {
+    font-size: 1.9rem;
+  }
+  .preview-middle {
+    padding: 0 8px;
+  }
+  .preview-middle small {
+    font-size: 0.48rem;
+  }
+  .preview-middle b {
+    font-size: 1.15rem;
+  }
+  .preview-middle em {
+    font-size: 0.62rem;
+    margin-top: 2px;
+  }
+  .control-grid {
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .control-card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .control-card h3 {
+    font-size: 0.63rem;
+    margin-bottom: 8px;
+  }
+  .team-card input {
+    padding: 7px 8px;
+    font-size: 0.72rem;
+  }
+  .score-controls {
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .score-controls strong {
+    min-width: 40px;
+    font-size: 1.8rem;
+  }
+  .score-controls button {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+  .setting-row {
+    display: grid;
+    gap: 6px;
+  }
+  .setting-row label {
+    font-size: 0.64rem;
+  }
+  .setting-row input {
+    width: 54px;
+    padding: 6px;
+    font-size: 0.7rem;
+  }
+  .action-button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 8px 5px;
+    font-size: 0.62rem;
+  }
+  .control-note {
+    font-size: 0.62rem;
+  }
+  .control-status {
+    gap: 8px;
+    font-size: 0.56rem;
+  }
+}
+.auth-page,
+.admin-page {
+  max-width: 680px;
+  padding: 92px 0 110px;
+}
+.auth-page h1,
+.admin-page h1 {
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  line-height: 0.9;
+}
+.page-intro {
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  margin-top: 22px;
+  max-width: 430px;
+}
+.auth-form {
+  display: grid;
+  gap: 18px;
+  max-width: 360px;
+  margin-top: 38px;
+}
+.auth-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.auth-form input {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  padding: 13px 14px;
+  font: inherit;
+  text-transform: none;
+}
+.primary-button,
+.secondary-button,
+.text-button {
+  border: 1px solid var(--orange);
+  background: var(--orange);
+  color: #080a0e;
+  padding: 13px 18px;
+  font:
+    600 0.9rem "Space Mono",
+    monospace;
+  cursor: pointer;
+}
+.secondary-button {
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+.text-button {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.form-error {
+  color: #ff7676;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+}
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 38px;
+}
+.admin-note {
+  border-top: 1px solid var(--line);
+  margin-top: 64px;
+  padding-top: 22px;
+  color: var(--muted);
+  max-width: 540px;
+}
+.admin-note strong {
+  color: var(--text);
+  font-size: 1.1rem;
+}
+.admin-note p {
+  margin-top: 8px;
+  line-height: 1.35;
+}
+.dashboard-page {
+  max-width: 1180px;
+}
+.admin-dashboard-head,
+.operator-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+.admin-toolbar {
+  display: flex;
+  gap: 12px;
+  margin: 32px 0;
+}
+.admin-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.match-sidebar,
+.operator-workspace,
+.user-management {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 18px;
+}
+.match-sidebar h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.match-select {
+  display: grid;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 12px 10px;
+  cursor: pointer;
+}
+.match-select.active {
+  border-color: var(--orange);
+  background: #171d25;
+}
+.match-select span {
+  font-weight: 700;
+}
+.match-select small {
+  color: var(--muted);
+  margin-top: 5px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.58rem;
+}
+.operator-top h2 {
+  font-size: 2rem;
+}
+.operator-top h2 span {
+  color: var(--muted);
+  font-weight: 400;
+}
+.operator-score {
+  display: grid;
+  grid-template-columns: 1fr 190px 1fr;
+  gap: 18px;
+  margin-top: 30px;
+}
+.operator-team {
+  display: grid;
+  gap: 10px;
+  text-align: center;
+  font-family: "Space Mono", monospace;
+  text-transform: uppercase;
+}
+.operator-team input {
+  background: #080a0e;
+  border: 1px solid currentColor;
+  color: inherit;
+  padding: 11px;
+  text-align: center;
+  font: inherit;
+}
+.operator-team strong {
+  font-size: 5rem;
+  line-height: 1;
+}
+.operator-team span {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.operator-team button {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  width: 42px;
+  height: 38px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.orange {
+  color: var(--orange);
+}
+.cyan {
+  color: var(--cyan);
+}
+.operator-clock {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  padding: 10px;
+}
+.operator-clock b {
+  font:
+    700 1.8rem "Space Mono",
+    monospace;
+}
+.operator-clock small {
+  font:
+    600 0.62rem "Space Mono",
+    monospace;
+  color: var(--muted);
+}
+.operator-clock .primary-button,
+.operator-clock .text-button {
+  width: 100%;
+  padding: 9px 8px;
+  font-size: 0.65rem;
+}
+.admin-empty {
+  padding: 70px 24px;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+}
+.admin-empty strong {
+  color: var(--text);
+  font-size: 1.4rem;
+}
+.admin-empty p {
+  margin-top: 10px;
+}
+.user-management {
+  margin-top: 36px;
+}
+.user-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+}
+.user-form input {
+  flex: 1 1 150px;
+  min-width: 130px;
+  background: #080a0e;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 11px;
+}
+.user-form .primary-button {
+  padding: 10px;
+}
+.user-list {
+  display: grid;
+  gap: 8px;
+}
+.user-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.user-row span {
+  color: var(--muted);
+  margin-right: auto;
+}
+.user-row b {
+  color: var(--orange);
+  font:
+    600 0.62rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.led-display {
+  height: 100vh;
+  background: #000;
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 28vw) 1fr;
+  align-items: stretch;
+  color: #fff;
+}
+.led-team {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+}
+.led-team small {
+  font:
+    700 clamp(1rem, 2.8vw, 2.3rem) "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.led-team strong {
+  font:
+    900 clamp(8rem, 20vw, 18rem)/0.8 "Space Mono",
+    monospace;
+}
+.led-center {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  border-left: 1px solid #242a31;
+  border-right: 1px solid #242a31;
+  text-align: center;
+}
+.led-center span,
+.led-center i {
+  font:
+    700 clamp(0.7rem, 1.3vw, 1rem) "Space Mono",
+    monospace;
+  color: #8995a2;
+  font-style: normal;
+}
+.led-center b {
+  font:
+    700 clamp(2.6rem, 5vw, 5rem) "Space Mono",
+    monospace;
+}
+.led-center em {
+  color: #ffe000;
+  font:
+    900 clamp(1.4rem, 3vw, 3rem) "Space Mono",
+    monospace;
+  font-style: normal;
+}
+.led-loading {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #000;
+  color: #8b95a0;
+  font:
+    1rem "Space Mono",
+    monospace;
+}
+@media (max-width: 720px) {
+  .admin-dashboard-head,
+  .operator-top {
+    display: block;
+  }
+  .admin-dashboard-head .text-button,
+  .operator-top .secondary-button {
+    display: inline-block;
+    margin-top: 20px;
+  }
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .operator-score {
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 8px;
+  }
+  .operator-team strong {
+    font-size: 3.2rem;
+  }
+  .operator-clock b {
+    font-size: 1rem;
+  }
+  .operator-clock .primary-button,
+  .operator-clock .text-button {
+    font-size: 0.54rem;
+    padding: 8px 3px;
+  }
+  .operator-top h2 {
+    font-size: 1.45rem;
+  }
+  .user-row {
+    display: grid;
+    gap: 5px;
+  }
+  .user-row span {
+    margin: 0;
+  }
+  .led-display {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 150px 1fr;
+  }
+  .led-center {
+    order: -1;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #242a31;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+  .led-center b {
+    font-size: 2rem;
+  }
+  .led-center span,
+  .led-center i {
+    font-size: 0.55rem;
+  }
+  .led-center em {
+    grid-column: 1/-1;
+    font-size: 1rem;
+  }
+  .led-team {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 16px;
+  }
+  .led-team strong {
+    font-size: 5rem;
+  }
+  .led-team small {
+    font-size: 0.7rem;
+  }
+}
