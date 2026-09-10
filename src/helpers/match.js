@@ -40,6 +40,9 @@ export function eventLabel(event, match) {
 }
 
 export function blankMatch(id = crypto.randomUUID()) {
+  // Only fields the backend actually accepts (mirrors WRITABLE_STATE_FIELDS
+  // in matchController.js). `phase` and `version` are server-derived/owned —
+  // sending them here never did anything, just read as if they mattered.
   return {
     _id: id,
     nameA: "TEAM A",
@@ -54,8 +57,5 @@ export function blankMatch(id = crypto.randomUUID()) {
     matchRunning: false,
     raidRunning: false,
     status: "upcoming",
-    phase: "upcoming",
-    version: 0,
-    events: [],
   };
 }

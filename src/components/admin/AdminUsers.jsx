@@ -4,15 +4,30 @@ import { api, jsonOptions } from "../../helpers/api.js";
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
   useEffect(() => {
-    api("/api/auth/users").then(setUsers);
+    api("/api/auth/users")
+      .then(setUsers)
+      .catch(() => {});
   }, []);
+
   async function create(event) {
     event.preventDefault();
-    const result = await api("/api/auth/users", jsonOptions("POST", form));
-    setUsers([result.user, ...users]);
-    setForm({ name: "", email: "", password: "" });
+    setBusy(true);
+    setError("");
+    try {
+      const result = await api("/api/auth/users", jsonOptions("POST", form));
+      setUsers([result.user, ...users]);
+      setForm({ name: "", email: "", password: "" });
+    } catch (err) {
+      setError(err.message || "Couldn't create the operator.");
+    } finally {
+      setBusy(false);
+    }
   }
+
   return (
     <div className="user-management">
       <div>
@@ -37,12 +52,14 @@ export default function AdminUsers() {
           type="password"
           placeholder="Temporary password"
           value={form.password}
-          onChange={(event) =>
-            setForm({ ...form, password: event.target.value })
-          }
+          onChange={(event) => setForm({ ...form, password: event.target.value })}
+          minLength={8}
           required
         />
-        <button className="primary-button">Create admin</button>
+        {error && <p className="form-error">{error}</p>}
+        <button className="primary-button" disabled={busy}>
+          {busy ? "Creating…" : "Create admin"}
+        </button>
       </form>
       <div className="user-list">
         {users.map((user) => (

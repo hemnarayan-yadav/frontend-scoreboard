@@ -1,15 +1,11 @@
+import { useNow, remainingMs } from "../../hooks/useNow.js";
 import { displayedSides, formatClock } from "../../helpers/match.js";
 
 export function Scoreboard({ match }) {
+  const now = useNow(250);
   const { left, right } = displayedSides(match);
-  const remaining =
-    match.matchRunning && match.matchEndAt
-      ? new Date(match.matchEndAt).getTime() - Date.now()
-      : match.matchRemainingMs;
-  const raid =
-    match.raidRunning && match.raidEndAt
-      ? new Date(match.raidEndAt).getTime() - Date.now()
-      : match.raidRemainingMs;
+  const remaining = remainingMs(match.matchRunning, match.matchEndAt, match.matchRemainingMs, now);
+  const raid = remainingMs(match.raidRunning, match.raidEndAt, match.raidRemainingMs, now);
   return (
     <div className="scoreboard">
       <div className="score-side orange">

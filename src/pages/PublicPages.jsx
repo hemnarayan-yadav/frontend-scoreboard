@@ -1,70 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { io } from "socket.io-client";
-import { API, api } from "../helpers/api.js";
+import { api } from "../helpers/api.js";
 import { eventLabel, formatDate, phaseLabel } from "../helpers/match.js";
-import {
-  BackButton,
-  Loading,
-  SiteLayout,
-} from "../components/layout/SiteLayout.jsx";
+import { BackButton, Loading, SiteLayout } from "../components/layout/SiteLayout.jsx";
 import { Scoreboard } from "../components/match/Scoreboard.jsx";
+import { useLiveMatch } from "../hooks/useLiveMatch.js";
 
 export function LivePage({ id }) {
-  const [match, setMatch] = useState(null);
-  const [events, setEvents] = useState([]);
-  const [connected, setConnected] = useState(false);
-  const [, refresh] = useState(Date.now());
-  useEffect(() => {
-    api(`/api/matches/${id}`)
-      .then((data) => {
-        setMatch(data);
-        setEvents(data.events || []);
-      })
-      .catch(() => {});
-    const socket = io(API);
-    socket.on("connect", () => {
-      setConnected(true);
-      socket.emit("match:join", id);
-    });
-    socket.on("disconnect", () => setConnected(false));
-    socket.on("state:update", (next) => {
-      setMatch(next);
-      if (next.events) setEvents(next.events);
-    });
-    socket.on("events:new", (added) => {
-      setEvents((current) => [
-        ...current,
-        ...added.filter(
-          (event) =>
-            !current.some((item) => item.clientEventId === event.clientEventId),
-        ),
-      ]);
-      setMatch((current) =>
-        current
-          ? added.reduce(
-              (next, event) => ({
-                ...next,
-                scoreA:
-                  event.team === "A"
-                    ? Math.max(0, next.scoreA + (event.points || 0))
-                    : next.scoreA,
-                scoreB:
-                  event.team === "B"
-                    ? Math.max(0, next.scoreB + (event.points || 0))
-                    : next.scoreB,
-              }),
-              current,
-            )
-          : current,
-      );
-    });
-    const timer = setInterval(() => refresh(Date.now()), 500);
-    return () => {
-      clearInterval(timer);
-      socket.disconnect();
-    };
-  }, [id]);
+  const { match, events, connected } = useLiveMatch(id);
   if (!match) return <Loading>Loading match…</Loading>;
   return (
     <SiteLayout>
@@ -133,7 +76,7 @@ export function HistoryPage() {
   useEffect(() => {
     api("/api/matches?status=completed")
       .then(setMatches)
-      .catch(() => {});
+      .catch(() => setMatches([]));
   }, []);
   return (
     <SiteLayout>

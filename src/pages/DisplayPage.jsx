@@ -1,30 +1,20 @@
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { API, api } from "../helpers/api.js";
+import { useLiveMatch } from "../hooks/useLiveMatch.js";
+import { useNow, remainingMs } from "../hooks/useNow.js";
 import { formatClock, phaseLabel } from "../helpers/match.js";
 import "../styles/display.css";
 
 export default function DisplayPage({ id }) {
-  const [match, setMatch] = useState(null);
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    api(`/api/matches/${id}`)
-      .then(setMatch)
-      .catch(() => {});
-    const socket = io(API);
-    socket.on("connect", () => socket.emit("match:join", id));
-    socket.on("state:update", setMatch);
-    const timer = setInterval(() => setNow(Date.now()), 500);
-    return () => {
-      clearInterval(timer);
-      socket.disconnect();
-    };
-  }, [id]);
+  const { match } = useLiveMatch(id);
+  const now = useNow(250);
   if (!match) return <div className="led-loading">Waiting for match…</div>;
-  const remaining =
-    match.matchRunning && match.matchEndAt
-      ? new Date(match.matchEndAt).getTime() - now
-      : match.matchRemainingMs;
+
+  const remaining = remainingMs(match.matchRunning, match.matchEndAt, match.matchRemainingMs, now);
+  // The previous version rendered `match.raidRemainingMs` directly here —
+  // a static snapshot that only changed when a new state:update socket
+  // message arrived (i.e. at raid start/stop), so the raid clock never
+  // visibly counted down second-by-second on the actual LED screen.
+  const raid = remainingMs(match.raidRunning, match.raidEndAt, match.raidRemainingMs, now);
+
   return (
     <div className="led-display">
       <div className="led-team orange">
@@ -35,8 +25,7 @@ export default function DisplayPage({ id }) {
         <span>{phaseLabel(match.phase)}</span>
         <b>{formatClock(remaining)}</b>
         <i>
-          {match.half === 1 ? "1ST HALF" : "2ND HALF"} · RAID{" "}
-          {formatClock(match.raidRemainingMs)}
+          {match.half === 1 ? "1ST HALF" : "2ND HALF"} · RAID {formatClock(raid)}
         </i>
         {match.status === "completed" && <em>FULL TIME</em>}
       </div>
