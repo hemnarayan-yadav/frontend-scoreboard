@@ -23,6 +23,10 @@ function pickStateFields(source) {
   return result;
 }
 
+function isNewerMatch(current, next) {
+  return !current || current._id !== next._id || (current.version || 0) <= (next.version || 0);
+}
+
 export default function ControlPanel({ match, onChange }) {
   const [draft, setDraft] = useState(match);
   const [busy, setBusy] = useState(false);
@@ -66,7 +70,7 @@ export default function ControlPanel({ match, onChange }) {
         `/api/matches/${draft._id}/state`,
         jsonOptions("PUT", { state: pickStateFields({ ...draft, ...next }) }),
       );
-      setDraft(saved);
+      setDraft((current) => (isNewerMatch(current, saved) ? saved : current));
       onChange(saved);
       return saved;
     } catch (err) {
@@ -91,13 +95,18 @@ export default function ControlPanel({ match, onChange }) {
   }
 
   function adjust(team, amount) {
+    if (isLocked) return;
     const side = draft.sideSwapped ? (team === "A" ? "B" : "A") : team;
     const teamName = draft[`name${side}`] || `Team ${side}`;
     const clockRemainingMs = remainingMs(draft.matchRunning, draft.matchEndAt, draft.matchRemainingMs, now);
-    save({
-      [`score${side}`]: Math.max(0, Number(draft[`score${side}`] || 0) + amount),
-      status: draft.status === "upcoming" ? "live" : draft.status,
-    })
+    setBusy(true);
+    setError("");
+    api(`/api/matches/${draft._id}/score`, jsonOptions("POST", { team: side, amount }))
+      .then((saved) => {
+        setDraft((current) => (isNewerMatch(current, saved) ? saved : current));
+        onChange(saved);
+        return saved;
+      })
       .then(() =>
         logEvent({
           type: "score_adjustment",
@@ -107,7 +116,8 @@ export default function ControlPanel({ match, onChange }) {
           note: `${teamName} — ${amount > 0 ? "Score added" : "Score adjusted"}`,
         }),
       )
-      .catch(() => {});
+      .catch((err) => setError(err.message || "Couldn't update the score — check the connection and try again."))
+      .finally(() => setBusy(false));
   }
 
   function setName(field, value) {

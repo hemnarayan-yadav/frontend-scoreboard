@@ -21,7 +21,7 @@ export function LivePage({ id }) {
             {match.nameA} <span>vs</span> {match.nameB}
           </h1>
           <a
-            className="hero-link"
+            className="text-link"
             href={`/display/${encodeURIComponent(id)}`}
             target="_blank"
             rel="noopener"
@@ -90,7 +90,7 @@ export function HistoryPage() {
       </section>
       <section className="section">
         {matches.length ? (
-          <div className="history-list">
+          <div className="public-history-list">
             {matches.map((match) => (
               <Link
                 className="history-row"

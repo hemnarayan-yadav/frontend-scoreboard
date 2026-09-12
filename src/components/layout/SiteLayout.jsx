@@ -43,7 +43,7 @@ export function SiteFooter() {
 
 export function SiteLayout({ children }) {
   return (
-    <main>
+    <main className="public-shell">
       <SiteHeader />
       {children}
       <SiteFooter />

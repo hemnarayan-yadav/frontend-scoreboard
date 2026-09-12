@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../helpers/api.js";
 import { displayedSides, phaseLabel } from "../helpers/match.js";
 import { SiteLayout } from "../components/layout/SiteLayout.jsx";
+import heroImage from "../assets/kabaddi-hero.png";
 
 export default function HomePage() {
   const [matches, setMatches] = useState([]);
@@ -24,7 +25,7 @@ export default function HomePage() {
   return (
     <SiteLayout>
       <section className="hero">
-        <div>
+        <div className="hero-copy">
           <p className="eyebrow">Live scoreboard</p>
           <h1>
             The game,
@@ -32,14 +33,20 @@ export default function HomePage() {
             <em>as it happens.</em>
           </h1>
           <p className="intro">
-            Follow every raid, point and final whistle from the mat.
+            Follow every raid, point and final whistle with a scoreboard built
+            for the speed of kabaddi.
           </p>
+          <div className="hero-actions">
+            <a className="primary-button" href="#live-matches">
+              Watch live
+            </a>
+            <Link className="text-link" to="/history">
+              Match archive
+            </Link>
+          </div>
         </div>
-        <Link className="hero-link" to="/history">
-          Explore match history →
-        </Link>
       </section>
-      <section className="section live-section">
+      <section className="section live-section" id="live-matches">
         <div className="section-head">
           <div>
             <p className="eyebrow">Right now</p>
@@ -50,12 +57,12 @@ export default function HomePage() {
           </span>
         </div>
         {matches.length ? (
-          <div className="match-list">
+          <div className="public-match-list">
             {matches.map((match) => {
               const { left, right } = displayedSides(match);
               return (
                 <Link
-                  className="match-card"
+                  className="public-match-card"
                   to={`/live/${match._id}`}
                   key={match._id}
                 >

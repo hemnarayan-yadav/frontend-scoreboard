@@ -45,7 +45,9 @@ export function useLiveMatch(id) {
       socket.emit("match:join", id);
     });
     socket.on("disconnect", () => setConnected(false));
-    socket.on("state:update", (next) => setMatch(next));
+    socket.on("state:update", (next) =>
+      setMatch((current) => (!current || (current.version || 0) <= (next.version || 0) ? next : current)),
+    );
     socket.on("events:new", (added) => {
       const fresh = added.filter((event) => !seenEventIds.current.has(event.clientEventId));
       if (!fresh.length) return;
