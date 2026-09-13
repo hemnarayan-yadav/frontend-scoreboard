@@ -56,6 +56,13 @@ export function blankMatch(id = crypto.randomUUID()) {
     raidRemainingMs: 30 * 1000,
     matchRunning: false,
     raidRunning: false,
+    timeoutActive: false,
+    timeoutMatchWasRunning: false,
+    timeoutRaidWasRunning: false,
+    sirenActive: false,
+    sirenNonce: 0,
+    sirenAt: null,
+    overlayText: null,
     status: "upcoming",
   };
 }

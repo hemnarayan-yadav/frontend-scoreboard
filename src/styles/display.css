@@ -1,103 +1,614 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Teko:wght@600;700&display=swap");
 
 .led-display {
+  --led-bg: #000;
+  --led-line: rgba(255, 255, 255, 0.1);
+  --led-team-a: #ff9100;
+  --led-team-b: #00e5ff;
+  --led-text: #fff;
+  --led-muted: #8a94a3;
+  --led-warn: #ffe000;
+  --led-danger: #ff2b2b;
+  --led-green: #00e676;
+  --led-score-font: "Teko", "Bahnschrift Condensed", "Arial Narrow", Impact, monospace;
+  --led-label-font: "Rajdhani", "Bahnschrift", "Segoe UI", Helvetica, Arial, sans-serif;
+
   height: 100vh;
+  overflow: hidden;
+  background: var(--led-bg);
+  color: var(--led-text);
+  font-family: var(--led-label-font);
+  position: relative;
+}
+
+.led-display * {
+  box-sizing: border-box;
+}
+
+.outline-text {
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000,
+    0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.led-board-wrap {
+  height: 100%;
+  display: flex;
+  min-height: 0;
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
+}
+
+.led-team-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vh, 26px);
+  position: relative;
+  padding: 20px;
   background: #000;
-  display: grid;
-  grid-template-columns: 1fr minmax(240px, 28vw) 1fr;
-  align-items: stretch;
+  overflow: hidden;
+}
+
+.led-team-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.led-team-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+}
+
+.led-team-panel.team-orange::before {
+  background: radial-gradient(circle at 70% 50%, var(--led-team-a), transparent 60%);
+}
+
+.led-team-panel.team-orange::after {
+  right: 0;
+  background: linear-gradient(180deg, var(--led-team-a), #c25f00);
+  box-shadow: 0 0 26px var(--led-team-a);
+}
+
+.led-team-panel.team-cyan::before {
+  background: radial-gradient(circle at 30% 50%, var(--led-team-b), transparent 60%);
+}
+
+.led-team-panel.team-cyan::after {
+  left: 0;
+  background: linear-gradient(180deg, var(--led-team-b), #0089a3);
+  box-shadow: 0 0 26px var(--led-team-b);
+}
+
+.led-team-name {
+  font-size: clamp(1.8rem, 3.6vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 94%;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.team-orange .led-team-name,
+.team-orange .led-team-score {
+  color: var(--led-team-a);
+}
+
+.team-cyan .led-team-name,
+.team-cyan .led-team-score {
+  color: var(--led-team-b);
+}
+
+.led-team-score {
+  font-family: var(--led-score-font);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(11rem, 26vw, 22rem);
+  line-height: 0.8;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  transform-origin: center;
+}
+
+.team-orange .led-team-score {
+  text-shadow:
+    0 0 50px rgba(255, 145, 0, 0.4),
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+}
+
+.team-cyan .led-team-score {
+  text-shadow:
+    0 0 50px rgba(0, 229, 255, 0.4),
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+}
+
+.led-center-panel {
+  width: clamp(300px, 30vw, 440px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-left: 1px solid var(--led-line);
+  border-right: 1px solid var(--led-line);
+  padding: 20px 16px;
+  background: #000;
+  position: relative;
+  z-index: 2;
+}
+
+.led-half-label,
+.led-raid-label {
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--led-muted);
+  transition: opacity 0.35s ease;
+}
+
+.led-half-label {
+  font-size: clamp(1.1rem, 2.1vw, 1.7rem);
+}
+
+.led-raid-label {
+  font-size: clamp(0.95rem, 1.7vw, 1.3rem);
+  letter-spacing: 0.14em;
+}
+
+.led-match-clock {
+  font-family: var(--led-score-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: clamp(4rem, 6.6vw, 6.4rem);
   color: #fff;
+  line-height: 0.9;
+  transition: opacity 0.35s ease;
 }
-.led-team {
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 22px;
+
+.led-match-clock.paused {
+  color: var(--led-muted);
 }
-.led-team small {
-  font:
-    700 clamp(1rem, 2.8vw, 2.3rem) "Space Mono",
-    monospace;
+
+.timeout-active .led-match-clock {
+  color: var(--led-warn);
+}
+
+.led-raid-ring {
+  position: relative;
+  width: clamp(140px, 14vw, 196px);
+  height: clamp(140px, 14vw, 196px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.led-raid-ring svg,
+.led-raid-overlay-ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.led-raid-ring-bg,
+.led-raid-overlay-bg {
+  fill: none;
+  stroke: var(--led-line);
+}
+
+.led-raid-ring-bg {
+  stroke-width: 9;
+}
+
+.led-raid-ring-fg,
+.led-raid-overlay-fg {
+  fill: none;
+  stroke: var(--led-green);
+  stroke-linecap: round;
+  transition: stroke 0.25s ease;
+}
+
+.led-raid-ring-fg {
+  stroke-width: 9;
+}
+
+.led-raid-ring-fg.yellow,
+.led-raid-overlay-fg.yellow {
+  stroke: var(--led-warn);
+}
+
+.led-raid-ring-fg.red,
+.led-raid-overlay-fg.red {
+  stroke: var(--led-danger);
+}
+
+.led-raid-time {
+  font-family: var(--led-score-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 4vw, 3.6rem);
+  color: var(--led-green);
+  transition: color 0.25s ease;
+}
+
+.led-raid-time.yellow,
+.led-raid-overlay-time.yellow {
+  color: var(--led-warn);
+}
+
+.led-raid-time.red,
+.led-raid-overlay-time.red {
+  color: var(--led-danger);
+}
+
+.raid-active .led-team-score {
+  transform: scale(0.72);
+  opacity: 0.9;
+}
+
+.raid-active .led-team-name {
+  transform: scale(0.85);
+  opacity: 0.9;
+}
+
+.raid-active .led-match-clock,
+.raid-active .led-half-label,
+.raid-active .led-raid-ring,
+.raid-active .led-raid-label {
+  opacity: 0;
+}
+
+.led-raid-top-clock {
+  position: fixed;
+  top: clamp(10px, 2.4vh, 26px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  z-index: 46;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--led-line);
+  border-radius: 8px;
+  padding: 8px 26px 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.led-raid-top-clock.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.led-raid-top-half {
+  font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--led-muted);
+}
+
+.led-raid-top-time {
+  font-family: var(--led-score-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  color: #fff;
+  line-height: 0.9;
+}
+
+.led-timeout-banner {
+  position: fixed;
+  top: clamp(74px, 11vh, 130px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  z-index: 48;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 34px 13px;
+  border: 1px solid rgba(255, 224, 0, 0.6);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow: 0 0 34px rgba(255, 224, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.led-timeout-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.led-timeout-title {
+  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--led-warn);
+  line-height: 0.95;
   text-transform: uppercase;
 }
-.led-team strong {
-  font:
-    900 clamp(8rem, 20vw, 18rem)/0.8 "Space Mono",
-    monospace;
+
+.led-timeout-subtitle {
+  font-size: clamp(0.8rem, 1.45vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-transform: uppercase;
 }
-.led-center {
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 20px;
-  border-left: 1px solid #242a31;
-  border-right: 1px solid #242a31;
+
+.led-raid-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.led-raid-overlay.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.timeout-active .led-raid-overlay.show {
+  opacity: 0.92;
+}
+
+.led-raid-overlay-ring {
+  position: relative;
+  width: min(78vh, 78vw);
+  height: min(78vh, 78vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.led-raid-overlay-ring::before {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.28) 55%, transparent 76%);
+  z-index: -1;
+}
+
+.led-raid-overlay-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 5;
+}
+
+.led-raid-overlay-fg {
+  stroke-width: 5;
+  filter: drop-shadow(0 0 14px currentColor);
+}
+
+.led-raid-overlay-time {
+  font-family: var(--led-score-font);
+  font-weight: 700;
+  line-height: 0.78;
+  font-variant-numeric: tabular-nums;
+  font-size: min(40vh, 40vw);
+  color: var(--led-green);
+  text-shadow:
+    0 0 90px currentColor,
+    -5px -5px 0 #000,
+    5px -5px 0 #000,
+    -5px 5px 0 #000,
+    5px 5px 0 #000;
+  transition: color 0.25s ease;
+}
+
+.led-raid-overlay-label {
+  margin-top: clamp(4px, 1vh, 14px);
+  font-size: min(3.6vh, 3.6vw);
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+.raid-critical .led-raid-overlay-ring {
+  animation: ledRaidPulseScale 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes ledRaidPulseScale {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.led-raid-alert {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: none;
+  pointer-events: none;
+  background: rgba(190, 0, 0, 0.3);
+  animation: ledRaidAlertPulse 0.55s ease-in-out infinite alternate;
+}
+
+.led-raid-alert.show {
+  display: block;
+}
+
+@keyframes ledRaidAlertPulse {
+  from {
+    opacity: 0.22;
+  }
+  to {
+    opacity: 0.55;
+  }
+}
+
+.led-conn-status {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--led-muted);
+  z-index: 50;
+}
+
+.led-conn-status.live {
+  color: #3ddc84;
+}
+
+.led-completion {
+  display: none;
   text-align: center;
+  position: relative;
+  z-index: 12;
 }
-.led-center span,
-.led-center i {
-  font:
-    700 clamp(0.7rem, 1.3vw, 1rem) "Space Mono",
-    monospace;
-  color: #8995a2;
-  font-style: normal;
+
+.led-completion.show {
+  display: block;
 }
-.led-center b {
-  font:
-    700 clamp(2.6rem, 5vw, 5rem) "Space Mono",
-    monospace;
+
+.completed .led-half-label,
+.completed .led-match-clock,
+.completed .led-raid-ring,
+.completed .led-raid-label {
+  display: none;
 }
-.led-center em {
-  color: #ffe000;
-  font:
-    900 clamp(1.4rem, 3vw, 3rem) "Space Mono",
-    monospace;
-  font-style: normal;
+
+.led-completion-title {
+  color: var(--led-warn);
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
+
+.led-winner-label {
+  margin-top: 8px;
+  color: var(--led-muted);
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.led-winner-name {
+  margin-top: 4px;
+  color: #fff;
+  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.led-flowers {
+  display: none;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.led-flowers.show {
+  display: block;
+}
+
+.led-flower {
+  position: absolute;
+  top: -12vh;
+  color: var(--led-warn);
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  animation: ledFlowerFall var(--fall-time) linear infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes ledFlowerFall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift), 112vh, 0) rotate(540deg);
+    opacity: 0.85;
+  }
+}
+
 .led-loading {
   height: 100vh;
   display: grid;
   place-items: center;
   background: #000;
   color: #8b95a0;
-  font:
-    1rem "Space Mono",
-    monospace;
+  font: 700 1rem "Rajdhani", sans-serif;
 }
+
 @media (max-width: 720px) {
-  .led-display {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 150px 1fr;
+  .led-board-wrap {
+    flex-direction: column;
   }
-  .led-center {
+
+  .led-center-panel {
     order: -1;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid #242a31;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    padding: 10px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--led-line);
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 16px;
   }
-  .led-center b {
-    font-size: 2rem;
+
+  .led-team-panel {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 24px;
   }
-  .led-center span,
-  .led-center i {
-    font-size: 0.55rem;
+
+  .led-team-score {
+    font-size: clamp(5rem, 18vw, 8.5rem);
   }
-  .led-center em {
-    grid-column: 1/-1;
-    font-size: 1rem;
+
+  .led-team-name {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
   }
-  .led-team {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 16px;
-  }
-  .led-team strong {
-    font-size: 5rem;
-  }
-  .led-team small {
-    font-size: 0.7rem;
+
+  .led-raid-overlay-ring {
+    width: min(70vh, 86vw);
+    height: min(70vh, 86vw);
   }
 }

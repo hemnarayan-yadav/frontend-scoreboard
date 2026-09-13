@@ -24,7 +24,7 @@ export default function HomePage() {
   }, []);
   return (
     <SiteLayout>
-      <section className="hero">
+      <section className="hero home-hero">
         <div className="hero-copy">
           <p className="eyebrow">Live scoreboard</p>
           <h1>
